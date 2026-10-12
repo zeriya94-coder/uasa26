@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 5 English UASA: Writing Adventure</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Fonts: Fredoka (Headings) and Nunito (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7465D5', // Purple
+                        primaryDark: '#5A4CBA',
+                        secondary: '#8ED8FF', // Sky Blue
+                        accent: '#FFE58A', // Pastel Yellow
+                        accentDark: '#F0D060',
+                        pink: '#FFB7D5', // Soft Pink
+                        mint: '#A5E8C3', // Mint Green
+                        cream: '#FFF9EB', // Warm Cream
+                        textMain: '#30334E',
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        '3d-btn': '0 6px 0 0 rgba(0,0,0,0.15)',
+                        '3d-btn-active': '0 2px 0 0 rgba(0,0,0,0.15)',
+                        'card': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+                        'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: #30334E;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* 3D Button Styles */
+        .btn-3d {
+            transition: all 0.1s ease-in-out;
+            position: relative;
+            top: 0;
+        }
+        .btn-3d:active {
+            top: 4px;
+            box-shadow: 0 2px 0 0 rgba(0,0,0,0.15);
+        }
+        .btn-3d:disabled {
+            background-color: #cbd5e1 !important;
+            box-shadow: 0 6px 0 0 #94a3b8 !important;
+            color: #64748b !important;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .btn-3d:disabled:active {
+            top: 0;
+        }
+
+        /* Card Hover Effects */
+        .game-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 4s ease-in-out 2s infinite;
+        }
+
+        /* Screen Transitions */
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Cloud Background Pattern */
+        .bg-clouds {
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M20,30 Q30,15 45,30 Q60,15 70,30 Q85,30 85,45 Q85,60 70,60 Q60,75 45,60 Q30,75 20,60 Q5,60 5,45 Q5,30 20,30 Z" fill="%23ffffff" fill-opacity="0.2"/></svg>');
+            background-size: 200px 200px;
+        }
+
+        /* Custom Scrollbar for writing area & tables */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF9EB;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #A5E8C3;
+            border-radius: 8px;
+            border: 3px solid #FFF9EB;
+        }
+        
+        .image-zoom-container {
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+        .image-zoom-container.zoomed {
+            cursor: zoom-out;
+            position: fixed;
+            top: 2%;
+            left: 2%;
+            width: 96%;
+            height: 96%;
+            z-index: 50;
+            background: rgba(0,0,0,0.9);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        /* Modal Overlays */
+        .modal-overlay {
+            backdrop-filter: blur(4px);
+        }
+
+        /* Formula Table specific styles */
+        .formula-table th, .formula-table td {
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem;
+        }
+        .formula-table th {
+            background-color: #f9fafb;
+        }
+        
+        /* Radio Button Styling for Grammar */
+        .custom-radio input[type="radio"] {
+            display: none;
+        }
+        .custom-radio label {
+            cursor: pointer;
+            border: 3px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+        .custom-radio input[type="radio"]:checked + label {
+            border-color: #7465D5;
+            background-color: #ede9fe;
+            box-shadow: 0 4px 0 0 #7465D5;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-clouds flex flex-col min-h-screen relative">
+
+    <!-- Decorative Floating Elements -->
+    <div class="fixed top-10 left-10 text-yellow-400 text-4xl animate-float opacity-50 z-0"><i class="fas fa-star"></i></div>
+    <div class="fixed bottom-20 right-10 text-pink text-4xl animate-float-delayed opacity-50 z-0"><i class="fas fa-pencil-alt"></i></div>
+    <div class="fixed top-40 right-20 text-secondary text-5xl animate-float opacity-50 z-0"><i class="fas fa-cloud"></i></div>
+    <div class="fixed bottom-40 left-20 text-mint text-4xl animate-float-delayed opacity-50 z-0"><i class="fas fa-envelope"></i></div>
+
+    <main class="flex-grow container mx-auto px-4 py-8 relative z-10 flex flex-col items-center justify-center">
+
+        <!-- ==================== SCREEN 1: HOMEPAGE ==================== -->
+        <section id="screen-home" class="screen active flex-col lg:flex-row items-center justify-center w-full max-w-5xl gap-12">
+            
+            <div class="text-center lg:text-left flex-1">
+                <div class="inline-block bg-accent text-primaryDark font-bold px-4 py-1 rounded-full mb-4 shadow-md uppercase tracking-wide text-sm">
+                    English Learning Zone
+                </div>
+                <h1 class="text-5xl md:text-7xl font-heading font-bold text-primary mb-2 drop-shadow-sm">
+                    YEAR 5 ENGLISH UASA
+                </h1>
+                <h2 class="text-3xl md:text-5xl font-heading font-bold text-secondary mb-4 stroke-text">
+                    WRITING ADVENTURE
+                </h2>
+                <p class="text-xl md:text-2xl font-bold text-textMain mb-8 italic">
+                    "Think. Write. Shine!"
+                </p>
+
+                <div class="bg-white p-8 rounded-3xl shadow-card w-full max-w-md mx-auto lg:mx-0 border-4 border-cream relative">
+                    <div class="absolute -top-6 -right-6 text-5xl text-accent animate-float">
+                        <i class="fas fa-sun"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-heading font-bold text-primary mb-2">Hello, Young Writer!</h3>
+                    <p class="text-gray-500 mb-6 font-semibold">Are you ready for your writing adventure?</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="studentName" class="block text-sm font-bold text-textMain mb-1">Student Name</label>
+                            <input type="text" id="studentName" placeholder="Enter your full name" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors bg-gray-50 font-body text-lg">
+                        </div>
+                        <div>
+                            <label for="studentClass" class="block text-sm font-bold text-textMain mb-1">Class</label>
+                            <div class="relative">
+                                <select id="studentClass" 
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors bg-gray-50 font-body text-lg appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select your class</option>
+                                    <option value="5 IK">5 IK</option>
+                                    <option value="5 IH">5 IH</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="btn-start" class="w-full mt-4 bg-primary hover:bg-primaryDark text-white font-heading font-bold text-xl py-4 rounded-xl shadow-3d-btn btn-3d flex items-center justify-center gap-2">
+                            LET'S START! <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <p id="login-error" class="text-red-500 text-sm font-bold text-center hidden mt-2">Please enter your name and select a class.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex flex-1 justify-center relative">
+                <svg width="350" height="400" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" class="animate-float">
+                    <ellipse cx="100" cy="240" rx="60" ry="10" fill="rgba(0,0,0,0.1)"/>
+                    <path d="M60 120 C40 160, 40 230, 40 230 L160 230 C160 230, 160 160, 140 120 Z" fill="#FFB7D5" />
+                    <path d="M50 100 C50 150, 100 180, 150 100 C160 80, 130 40, 100 40 C70 40, 40 80, 50 100 Z" fill="#A5E8C3" stroke="#88D0A8" stroke-width="2"/>
+                    <circle cx="100" cy="85" r="35" fill="#FFE0C2"/>
+                    <circle cx="85" cy="85" r="4" fill="#30334E"/>
+                    <circle cx="115" cy="85" r="4" fill="#30334E"/>
+                    <circle cx="84" cy="84" r="1.5" fill="#FFF"/>
+                    <circle cx="114" cy="84" r="1.5" fill="#FFF"/>
+                    <ellipse cx="75" cy="95" rx="6" ry="3" fill="#FF99B3" opacity="0.6"/>
+                    <ellipse cx="125" cy="95" rx="6" ry="3" fill="#FF99B3" opacity="0.6"/>
+                    <path d="M90 98 Q100 108 110 98" fill="none" stroke="#30334E" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M60 140 C40 160, 70 180, 80 170" fill="none" stroke="#FFB7D5" stroke-width="15" stroke-linecap="round"/>
+                    <path d="M140 140 C160 160, 130 180, 120 170" fill="none" stroke="#FFB7D5" stroke-width="15" stroke-linecap="round"/>
+                    <rect x="75" y="150" width="50" height="40" rx="3" fill="#7465D5" transform="rotate(-10 100 170)"/>
+                    <rect x="78" y="152" width="44" height="36" rx="2" fill="#FFF" transform="rotate(-10 100 170)"/>
+                    <line x1="85" y1="160" x2="110" y2="155" stroke="#ccc" stroke-width="2" transform="rotate(-10 100 170)"/>
+                    <line x1="85" y1="170" x2="115" y2="165" stroke="#ccc" stroke-width="2" transform="rotate(-10 100 170)"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: PART SELECTION ==================== -->
+        <section id="screen-parts" class="screen flex-col items-center w-full max-w-4xl pt-8">
+            <button onclick="goHome()" class="self-start mb-6 text-primary font-bold text-lg hover:text-primaryDark flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                <i class="fas fa-home"></i> Home
+            </button>
+            
+            <div class="text-center mb-10">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2">CHOOSE YOUR ADVENTURE!</h2>
+                <p class="text-xl font-bold text-gray-500">Which part would you like to practise today, <span id="display-name-parts" class="text-secondary"></span>?</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                <!-- Part 6 -->
+                <div class="game-card bg-white rounded-[2rem] p-8 shadow-card border-4 border-secondary flex flex-col items-center text-center cursor-pointer relative overflow-hidden group" onclick="selectPart('part6')">
+                    <div class="absolute top-0 right-0 bg-secondary text-white font-bold py-1 px-4 rounded-bl-xl">10 MARKS</div>
+                    <div class="w-32 h-32 mb-6 flex items-center justify-center bg-blue-50 rounded-full group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-envelope-open-text text-6xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-bold text-textMain mb-1">PART 6</h3>
+                    <p class="text-xl text-mint font-bold mb-4">EMAIL WRITING</p>
+                    <div id="part6-completion-status" class="mb-4 text-sm font-bold text-gray-500 px-4 py-2 bg-gray-50 rounded-lg w-full">
+                        <!-- Filled by JS -->
+                    </div>
+                    <button class="w-full bg-secondary hover:bg-blue-400 text-white font-heading font-bold text-xl py-3 rounded-xl shadow-[0_6px_0_0_#5b9ac7] active:shadow-[0_2px_0_0_#5b9ac7] active:top-[4px] relative transition-all mt-auto">
+                        LET'S WRITE AN EMAIL!
+                    </button>
+                </div>
+
+                <!-- Part 7 -->
+                <div class="game-card bg-white rounded-[2rem] p-8 shadow-card border-4 border-pink flex flex-col items-center text-center cursor-pointer relative overflow-hidden group" onclick="selectPart('part7')">
+                    <div class="absolute top-0 right-0 bg-pink text-white font-bold py-1 px-4 rounded-bl-xl">15 MARKS</div>
+                    <div class="w-32 h-32 mb-6 flex items-center justify-center bg-pink-50 rounded-full group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-book-open text-6xl text-pink"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-bold text-textMain mb-1">PART 7</h3>
+                    <p class="text-xl text-primary font-bold mb-4">GUIDED WRITING</p>
+                    <div id="part7-completion-status" class="mb-4 text-sm font-bold text-gray-500 px-4 py-2 bg-gray-50 rounded-lg w-full">
+                        <!-- Filled by JS -->
+                    </div>
+                    <button class="w-full bg-pink hover:bg-pink-400 text-white font-heading font-bold text-xl py-3 rounded-xl shadow-[0_6px_0_0_#c7829f] active:shadow-[0_2px_0_0_#c7829f] active:top-[4px] relative transition-all mt-auto">
+                        LET'S START WRITING!
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 3: QUESTION SELECTION ==================== -->
+        <section id="screen-questions" class="screen flex-col items-center w-full max-w-5xl pt-8">
+            <div class="w-full flex justify-between items-center mb-6">
+                <button onclick="goToParts()" class="text-primary font-bold text-lg hover:text-primaryDark flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                    <i class="fas fa-arrow-left"></i> Back to Parts
+                </button>
+                <div id="student-info-display-questions" class="hidden md:block bg-white px-4 py-2 rounded-full shadow-sm font-bold text-gray-500 text-sm border-2 border-cream"></div>
+            </div>
+            
+            <div class="text-center mb-10 w-full">
+                <div id="part-badge" class="inline-block px-6 py-2 rounded-full font-bold text-white mb-4 shadow-md uppercase tracking-wide text-sm bg-primary"></div>
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-textMain mb-2">CHOOSE YOUR QUESTION!</h2>
+            </div>
+
+            <div id="question-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                <!-- Generated by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 4a: PART 7 FORMULA WIZARD ==================== -->
+        <section id="screen-formula-wizard" class="screen flex-col items-center w-full max-w-3xl pt-4 lg:pt-8 h-full">
+            <div class="w-full flex justify-between items-center mb-6">
+                <div class="flex gap-2">
+                    <button class="btn-back-questions text-primary font-bold text-lg hover:text-primaryDark flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                        <i class="fas fa-arrow-left"></i> Questions
+                    </button>
+                    <button onclick="goToParts()" class="text-gray-500 font-bold text-lg hover:text-primary transition-colors flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                        <i class="fas fa-layer-group"></i> Parts
+                    </button>
+                </div>
+                <button onclick="openModal('modal-question-ref')" class="bg-secondary hover:bg-blue-400 text-white font-bold px-4 py-2 rounded-full shadow-sm flex items-center gap-2">
+                    <i class="fas fa-eye"></i> View Question
+                </button>
+            </div>
+
+            <div class="w-full bg-white rounded-[2rem] p-8 shadow-card border-4 border-pink relative overflow-hidden flex flex-col">
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-6 overflow-hidden">
+                    <div id="formula-progress" class="bg-pink h-3 rounded-full transition-all duration-300" style="width: 5%"></div>
+                </div>
+
+                <div class="flex justify-between items-center mb-2">
+                    <span id="formula-step-counter" class="text-sm font-bold text-gray-400 uppercase tracking-wider">Step 1 of 24</span>
+                    <span id="formula-label-display" class="bg-pink-100 text-pink font-bold px-3 py-1 rounded-lg text-sm">Grammar</span>
+                </div>
+
+                <h3 id="formula-instruction" class="text-2xl md:text-3xl font-heading font-bold text-textMain mb-4">Instruction text here</h3>
+
+                <!-- Input Container (Dynamic based on step type) -->
+                <div id="formula-input-container" class="flex-grow flex flex-col gap-4 mb-8">
+                    <!-- Injected by JS -->
+                </div>
+
+                <p id="formula-error" class="text-red-500 font-bold text-sm mb-4 hidden bg-red-50 p-3 rounded-lg border border-red-200"><i class="fas fa-exclamation-circle"></i> <span id="formula-error-text"></span></p>
+
+                <!-- Navigation -->
+                <div class="flex justify-between mt-auto gap-4">
+                    <button id="btn-formula-back" class="flex-1 bg-white border-2 border-gray-300 hover:bg-gray-100 text-gray-600 font-bold text-lg py-3 rounded-xl shadow-sm transition-colors">
+                        BACK
+                    </button>
+                    <button id="btn-formula-next" class="flex-1 bg-pink hover:bg-pink-400 text-white font-heading font-bold text-xl py-3 rounded-xl shadow-[0_6px_0_0_#c7829f] btn-3d transition-all">
+                        NEXT <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 4b: PART 7 FORMULA REVIEW ==================== -->
+        <section id="screen-formula-review" class="screen flex-col items-center w-full max-w-4xl pt-4 lg:pt-8 h-full">
+            <div class="w-full flex justify-between items-center mb-6">
+                <div class="flex gap-2">
+                    <button class="btn-back-questions text-primary font-bold text-lg hover:text-primaryDark flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                        <i class="fas fa-arrow-left"></i> Questions
+                    </button>
+                    <button onclick="goToParts()" class="text-gray-500 font-bold text-lg hover:text-primary transition-colors flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full">
+                        <i class="fas fa-layer-group"></i> Parts
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="inline-block px-6 py-2 rounded-full font-bold text-white mb-4 shadow-md bg-mint">
+                    <i class="fas fa-check-circle"></i> FORMULA COMPLETED
+                </div>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-textMain mb-2">REVIEW YOUR WRITING FORMULA</h2>
+            </div>
+
+            <div class="w-full bg-white rounded-2xl p-6 shadow-card border-4 border-mint mb-8 overflow-x-auto">
+                <table class="w-full text-left border-collapse formula-table min-w-[600px]">
+                    <thead>
+                        <tr>
+                            <th class="w-1/4 text-primary font-heading text-lg rounded-tl-lg">Formula</th>
+                            <th class="w-3/4 text-primary font-heading text-lg rounded-tr-lg">Your Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="formula-review-tbody">
+                        <!-- Generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="continueToFullEmail()" class="w-full max-w-md bg-primary hover:bg-primaryDark text-white font-heading font-bold text-2xl py-4 rounded-xl shadow-3d-btn btn-3d flex items-center justify-center gap-3 transition-colors mb-10">
+                CONTINUE TO FULL EMAIL <i class="fas fa-pencil-alt"></i>
+            </button>
+        </section>
+
+        <!-- ==================== SCREEN 5: WRITING INTERFACE (Part 6 & Part 7 Final) ==================== -->
+        <section id="screen-write" class="screen flex-col w-full max-w-6xl pt-4 lg:pt-8 h-full">
+            <div class="flex justify-between items-center mb-4 lg:mb-6">
+                <div class="flex gap-2">
+                    <button id="btn-back-from-write" class="text-primary font-bold text-lg hover:text-primaryDark flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm transition-transform hover:-translate-x-1">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button onclick="goToParts()" class="text-gray-500 font-bold text-lg hover:text-primary transition-colors flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hidden sm:flex">
+                        <i class="fas fa-layer-group"></i> Parts
+                    </button>
+                </div>
+                <div class="flex gap-3">
+                    <button id="btn-view-formula" onclick="openModal('modal-formula-ref')" class="hidden bg-pink hover:bg-pink-400 text-white font-bold px-4 py-2 rounded-full shadow-sm flex items-center gap-2">
+                        <i class="fas fa-list-alt"></i> View My Formula
+                    </button>
+                    <div id="student-info-display" class="hidden md:block bg-white px-4 py-2 rounded-full shadow-sm font-bold text-gray-500 text-sm border-2 border-cream"></div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-6 h-full items-stretch">
+                <!-- Left: Question Area -->
+                <div class="w-full lg:w-1/2 flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl shadow-card border-4 border-cream p-4 flex-grow flex flex-col h-[50vh] lg:h-auto relative">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 id="current-question-title" class="text-xl font-heading font-bold text-primary">Question Title</h3>
+                            <span id="current-question-marks" class="bg-accent text-primaryDark text-xs font-bold px-3 py-1 rounded-full"></span>
+                        </div>
+                        
+                        <div id="image-gallery-container" class="relative flex-grow bg-gray-100 rounded-xl overflow-y-auto border-2 border-dashed border-gray-300 group p-2 flex flex-col gap-4 image-zoom-container transition-all">
+                            <!-- Injected by JS -->
+                            <div id="zoom-hint" class="fixed bottom-6 right-6 bg-black/80 text-white text-sm px-4 py-2 rounded-full pointer-events-none opacity-0 transition-opacity z-50 hidden">
+                                <i class="fas fa-search-minus"></i> Click anywhere to close zoom
+                            </div>
+                            <div class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity gallery-hint z-10">
+                                <i class="fas fa-search-plus"></i> Click to zoom
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Writing Area -->
+                <div class="w-full lg:w-1/2 flex flex-col gap-4 h-[60vh] lg:h-auto">
+                    <div class="bg-white rounded-2xl shadow-card border-4 border-cream p-5 flex flex-col flex-grow relative">
+                        <div id="part7-target-badge" class="hidden absolute -top-4 right-4 bg-mint text-white font-bold px-4 py-1 rounded-full shadow-md z-10 text-sm">Target: 60-80 words</div>
+                        
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-heading font-bold flex items-center gap-2">
+                                <i class="fas fa-pen-nib text-primary"></i> <span id="writing-header">WRITE YOUR ANSWER</span>
+                            </h3>
+                            <div class="text-sm font-bold px-3 py-1 bg-gray-100 rounded-lg text-gray-600">
+                                Words: <span id="word-count" class="text-primary font-black text-lg">0</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Read-only Email Header for Part 7 and 6 -->
+                        <div id="email-header-display" class="hidden mb-3 p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-700 font-body shadow-sm">
+                            <div class="font-bold text-lg mb-1">To: <span id="email-to-text" class="font-normal"></span></div>
+                            <div class="font-bold text-lg">Subject: <span id="email-subject-text" class="font-normal"></span></div>
+                        </div>
+
+                        <!-- The Textarea -->
+                        <textarea id="answer-input" 
+                            class="w-full flex-grow p-4 bg-[#FFF9EB] border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/20 focus:outline-none resize-none font-body text-lg text-gray-800 leading-relaxed shadow-inner"
+                            placeholder="Start typing your answer here..."></textarea>
+                            
+                        <p id="email-error-msg" class="text-red-500 font-bold text-sm mt-3 hidden bg-red-50 p-3 rounded-lg border border-red-200"><i class="fas fa-exclamation-circle"></i> <span id="email-error-text"></span></p>
+
+                        <div class="mt-4 flex gap-3">
+                            <button id="btn-clear-answer" class="bg-white border-2 border-gray-300 hover:bg-gray-100 text-gray-600 font-bold text-lg px-6 py-3 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fas fa-trash-alt"></i> CLEAR
+                            </button>
+                            <button id="btn-submit-answer" class="flex-grow bg-primary hover:bg-primaryDark text-white font-heading font-bold text-xl py-3 rounded-xl shadow-3d-btn btn-3d flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-paper-plane"></i> SUBMIT ANSWER
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Overlays -->
+    <div id="modal-overlay" class="fixed inset-0 bg-textMain/40 z-50 hidden items-center justify-center modal-overlay p-4">
+        
+        <!-- Loading State -->
+        <div id="modal-loading" class="hidden bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center max-w-sm w-full border-4 border-secondary">
+            <div class="w-16 h-16 border-8 border-gray-200 border-t-secondary rounded-full animate-spin mb-4"></div>
+            <h3 class="text-2xl font-heading font-bold text-textMain text-center">Saving Answer...</h3>
+            <p class="text-gray-500 font-bold mt-2 text-center">Awaiting submission confirmation.</p>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="modal-success" class="hidden bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center max-w-md w-full border-4 border-mint text-center relative overflow-hidden">
+             <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem]">
+                 <div class="absolute top-2 left-10 text-yellow-400 text-2xl animate-bounce"><i class="fas fa-star"></i></div>
+                 <div class="absolute top-10 right-10 text-pink text-xl animate-bounce" style="animation-delay: 0.2s"><i class="fas fa-star"></i></div>
+                 <div class="absolute top-20 left-20 text-secondary text-2xl animate-bounce" style="animation-delay: 0.4s"><i class="fas fa-star"></i></div>
+             </div>
+            <div class="w-24 h-24 bg-mint rounded-full flex items-center justify-center mb-4 text-white text-5xl shadow-inner z-10">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-3xl font-heading font-bold text-textMain mb-2 z-10">WELL DONE!</h3>
+            <p class="text-lg text-gray-600 font-bold mb-2 z-10">Your answer has been submitted successfully!</p>
+            <p class="text-xs text-mint font-bold mb-6 z-10 uppercase bg-green-50 px-3 py-1 rounded-full inline-block">✓ Submission Confirmed</p>
+            
+            <div class="flex flex-col gap-3 w-full z-10">
+                <button onclick="goToQuestions()" class="w-full bg-mint hover:bg-green-400 text-white font-heading font-bold text-lg py-3 rounded-xl shadow-sm transition-all">
+                    TRY ANOTHER QUESTION
+                </button>
+                <button onclick="goToParts()" class="w-full bg-white border-2 border-mint hover:bg-green-50 text-mint font-heading font-bold text-lg py-3 rounded-xl transition-all">
+                    BACK TO PARTS
+                </button>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="modal-confirm" class="hidden bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center max-w-md w-full border-4 border-accent text-center">
+            <div class="text-5xl text-accentDark mb-4"><i class="fas fa-question-circle"></i></div>
+            <h3 class="text-2xl font-heading font-bold text-textMain mb-2">Ready to Submit?</h3>
+            <p id="confirm-warning-text" class="text-gray-600 font-bold mb-6">Are you sure you want to hand in your answer? You cannot change it later.</p>
+            <div class="flex gap-4 w-full">
+                <button onclick="closeModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-heading font-bold text-lg py-3 rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button onclick="processSubmission()" class="flex-1 bg-primary hover:bg-primaryDark text-white font-heading font-bold text-lg py-3 rounded-xl shadow-3d-btn transition-colors">
+                    Yes, Submit!
+                </button>
+            </div>
+        </div>
+        
+        <!-- Error Modal -->
+        <div id="modal-error" class="hidden bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center max-w-md w-full border-4 border-red-400 text-center">
+            <div class="w-20 h-20 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4 text-4xl shadow-inner">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="text-2xl font-heading font-bold text-textMain mb-2">Oops! Something went wrong.</h3>
+            <p id="error-message-text" class="text-gray-600 font-bold mb-6">Could not connect to the database.</p>
+            <button onclick="closeModal()" class="w-full bg-red-400 hover:bg-red-500 text-white font-heading font-bold text-xl py-3 rounded-xl shadow-[0_6px_0_0_#c53030] btn-3d transition-all">
+                TRY AGAIN
+            </button>
+        </div>
+    </div>
+
+    <!-- Question Reference Modal (For Wizard) -->
+    <div id="modal-question-ref" class="fixed inset-0 bg-textMain/70 z-[60] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl flex flex-col w-full max-w-2xl max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-2xl font-heading font-bold text-primary">Question Reference</h3>
+                <button onclick="closeRefModal('modal-question-ref')" class="text-gray-400 hover:text-red-500 text-2xl"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="modal-question-content" class="overflow-y-auto flex-grow bg-gray-50 p-4 rounded-xl border border-gray-200 text-lg">
+                <!-- Injected via JS -->
+            </div>
+            <button onclick="closeRefModal('modal-question-ref')" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 rounded-xl transition-colors">Close</button>
+        </div>
+    </div>
+
+    <!-- Formula Reference Modal (For Final Email Writing) -->
+    <div id="modal-formula-ref" class="fixed inset-0 bg-textMain/70 z-[60] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl flex flex-col w-full max-w-3xl max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-2xl font-heading font-bold text-pink">My Writing Formula</h3>
+                <button onclick="closeRefModal('modal-formula-ref')" class="text-gray-400 hover:text-red-500 text-2xl"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-grow bg-white rounded-xl border border-gray-200 p-2">
+                 <table class="w-full text-left border-collapse formula-table text-sm md:text-base">
+                    <thead>
+                        <tr><th class="w-1/4">Formula</th><th class="w-3/4">Your Answer</th></tr>
+                    </thead>
+                    <tbody id="modal-formula-tbody">
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <button onclick="closeRefModal('modal-formula-ref')" class="mt-4 w-full bg-pink hover:bg-pink-400 text-white font-bold py-3 rounded-xl transition-colors shadow-sm">Back to Writing</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 text-sm font-bold text-gray-500 z-10 relative mt-auto bg-white/50 backdrop-blur-sm border-t border-white/50">
+        Created by Madam Natiemn Official • Year 5 English UASA
+    </footer>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        const questionBank = {
+            part6: [
+                { id: 'P6-S1', part: 6, set: 1, title: 'Green Valley Zoo', marks: 10, available: true, content: { instruction: "You went on a school trip to Green Valley Zoo. You want to tell your friend, Nina, about the trip.", task: "Write an email to Nina.", bullets: ["when you went to the zoo", "how you travel there", "what animals did you see"], wordLimit: "Write about 30–50 words.", emailTo: "nina@mail.com", emailSubject: "Green Valley Zoo" } },
+                { id: 'P6-S2', part: 6, set: 2, title: 'Birthday Party', marks: 10, available: true, content: { instruction: "You are having a birthday party this weekend. You want to invite your friend, Ali, to your party.", task: "Write an email to Ali.", bullets: ["when the party is", "where the party is", "what food you will have"], wordLimit: "Write about 30–50 words.", emailTo: "ali@mail.com", emailSubject: "My Birthday Party" } },
+                { id: 'P6-S3', part: 6, set: 3, title: 'Healthy Lunchbox', marks: 10, available: true, content: { instruction: "You want to share ideas about a healthy lunchbox with your friend, Sarah.", task: "Write an email to Sarah.", bullets: ["what food is in your lunchbox", "why it is healthy", "your favourite fruit"], wordLimit: "Write about 30–50 words.", emailTo: "sarah@mail.com", emailSubject: "Healthy Lunchbox Ideas" } },
+                { id: 'P6-S4', part: 6, set: 4, title: 'Trip to Bluewave Island', marks: 10, available: true, content: { instruction: "You just came back from a trip to Bluewave Island with your family. You want to tell your friend, John, about it.", task: "Write an email to John.", bullets: ["who you went with", "how long you stayed there", "what activities you did"], wordLimit: "Write about 30–50 words.", emailTo: "john@mail.com", emailSubject: "Trip to Bluewave Island" } }
+            ],
+            part7: [
+                { id: 'P7-S1', part: 7, set: 1, title: 'Healthy Living Day', marks: 15, available: true, content: { instruction: "You attended the Healthy Living Day shown in the poster. Write an email to your friend, Nadia, to tell her about the event.", eventTitle: "HEALTHY LIVING DAY", eventInfo: ["Date: Saturday, 18 July 2025", "Time: 8:00 a.m. – 12:30 p.m.", "Venue: School Hall", "Admission: FREE ENTRY"], activitiesHeading: "ACTIVITIES", activities: ["<b>Healthy Breakfast Demo – 8:30 a.m.</b><br>Make a healthy sandwich and a fruit drink.", "<b>Fitness Challenge – 10:00 a.m.</b><br>Do simple exercises with your friends.", "<b>Health Quiz – 11:00 a.m.</b><br>Answer questions about healthy food and exercise."], task: "Write your email to Nadia in about 60–80 words.", emailTo: "Nadia", emailSubject: "Healthy Living Day" } },
+                { id: 'P7-S2', part: 7, set: 2, title: 'Harbour Sports Carnival', marks: 15, available: true, content: { instruction: "You attended the Harbour Sports Carnival. Write an email to your brother, Osman, to tell him about the activities you joined and what you learnt.", eventTitle: "HARBOUR SPORTS CARNIVAL", eventInfo: ["Date: Saturday, 12 July 2025", "Time: 8:00 a.m. – 1:00 p.m.", "Venue: Harbour Sports Field"], activitiesHeading: "ACTIVITIES", activities: ["Mini football", "Relay race", "Badminton", "Tug of war"], specialEventsHeading: "SPECIAL EVENTS", specialEvents: ["Team challenge", "Healthy lunch packs", "Medals for winners"], task: "Write your email to Osman in about 60–80 words.", emailTo: "Osman", emailSubject: "Harbour Sports Carnival" } },
+                { id: 'P7-S3', part: 7, set: 3, title: 'Moonrise Science Fair', marks: 15, available: true, content: { instruction: "You attended the Moonrise Science Fair. Write an email to your sister, Alia, to tell her about the activities you joined and what you learnt.", eventTitle: "MOONRISE SCIENCE FAIR", eventInfo: ["Date: Saturday, 12 September 2025", "Time: 9:00 a.m. – 12:00 noon", "Venue: Moonrise Primary School Hall"], activitiesHeading: "ACTIVITIES", activities: ["Space model display", "Fun science experiments", "Talk by a young scientist", "Make-your-own rocket activity"], task: "Write your email to Alia in about 60–80 words.", emailTo: "Alia", emailSubject: "Moonrise Science Fair" } },
+                { id: 'P7-S4', part: 7, set: 4, title: 'Skylab Science Fair', marks: 15, available: true, content: { instruction: "You attended the Skylab Science Fair shown in the poster. Write an email to your friend, Sarah, to tell her about the event.", eventTitle: "SKYLAB SCIENCE FAIR", eventInfo: ["Date: 20 September 2025", "Time: 9.00 a.m. – 1.00 p.m.", "Venue: Orion Hall", "Admission: FREE ENTRY"], activitiesHeading: "ACTIVITIES", activities: ["<b>Robot Show</b><br>Time: 9.30 a.m.", "<b>Science Experiment</b><br>Time: 10.30 a.m.", "<b>Quiz Challenge</b><br>Time: 12.00 p.m."], task: "Write your email to Sarah in about 60–80 words.", emailTo: "Sarah", emailSubject: "Skylab Science Fair" } },
+                { id: 'P7-S5', part: 7, set: 5, title: 'Global Art Festival', marks: 15, available: false, content: {} }
+            ]
+        };
+
+        // --- APP STATE ---
+        let state = {
+            studentName: '',
+            studentClass: '',
+            selectedPart: '',
+            selectedQuestion: null,
+            answerText: '',
+            isSubmitting: false,
+            completedQuestions: [], 
+            draftAnswers: {}, 
+            formulas: {}, 
+            formulaStepIndex: 0,
+            isEditingFormula: false
+        };
+
+        // Current active formula reference
+        let activeFormula = {};
+
+        const createEmptyFormula = () => ({
+            grammar: '', de: '', ho: '', iho: '', qi: '', p1: '', p2: '', p3: '',
+            p4_1_start: '', p4_1_act: '', p4_1_what: '', p4_1_feel: '',
+            p4_2_start: '', p4_2_act: '', p4_2_what: '', p4_2_feel: '',
+            p4_3_start: '', p4_3_act: '', p4_3_what: '', p4_3_feel: '',
+            ienjoy: '', see: '', yo: '', na: '',
+            completed: false
+        });
+
+        // --- SMART VALIDATION ---
+        function smartValidate(text, type = 'sentence') {
+            if (!text || text.trim().length === 0) {
+                return { valid: false, msg: "Please write a meaningful answer." };
+            }
+
+            const cleanedText = text.trim();
+            const words = cleanedText.split(/\s+/).filter(w => w.length > 0);
+
+            // 1. Repeated character check
+            if (/([a-zA-Z])\1{4,}/i.test(cleanedText)) {
+                return { valid: false, msg: "Please write a meaningful answer." };
+            }
+
+            // 2. Keyboard spam check
+            const spamPatterns = [/asdfgh/i, /qwerty/i, /zxcvbn/i, /hjklhjkl/i, /123456/i];
+            if (spamPatterns.some(p => p.test(cleanedText.replace(/\s/g, '')))) {
+                return { valid: false, msg: "Please write a meaningful answer." };
+            }
+
+            // 3. Meaningless word repetition 
+            if (words.length >= 4) {
+                const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+                if (uniqueWords.size === 1) {
+                    return { valid: false, msg: "Please write a meaningful answer." };
+                }
+                
+                let maxSeq = 1; let curSeq = 1;
+                for (let i = 1; i < words.length; i++) {
+                    if (words[i].toLowerCase() === words[i-1].toLowerCase()) {
+                        curSeq++; 
+                        maxSeq = Math.max(maxSeq, curSeq);
+                    } else { 
+                        curSeq = 1; 
+                    }
+                }
+                if (maxSeq > 3) {
+                    return { valid: false, msg: "Please write a meaningful answer." };
+                }
+            }
+
+            // 4. Context-aware sentence requirements
+            if (type === 'sentence') {
+                if (words.length < 2 && !cleanedText.includes(' ')) {
+                    return { valid: false, msg: "Please write a complete sentence." };
+                }
+            }
+
+            if (type === 'price') {
+                if (words.length < 2 && !cleanedText.toLowerCase().includes('free') && !cleanedText.includes('rm')) {
+                    return { valid: false, msg: "Please write a complete sentence." };
+                }
+            }
+            
+            if (type === 'email') {
+                if (words.length < 10) {
+                    return { valid: false, msg: "Please write a meaningful answer." };
+                }
+            }
+
+            return { valid: true };
+        }
+
+        // --- FORMULA WIZARD DEFINITION ---
+        const formulaStepsDef = [
+            { id: 'grammar', label: 'Grammar', text: 'Which tense should you use?', type: 'radio', options: ['Present Tense', 'Past Tense', 'Future Tense'], validate: (val) => val === 'Past Tense' ? true : "Incorrect. Please try again.", valType: 'none' },
+            { id: 'de', label: 'D(e)', text: 'Write your email greeting.', type: 'text', valType: 'short' },
+            { id: 'ho', label: 'H(o)', text: 'Ask your friend how they are.', type: 'text', valType: 'short' },
+            { id: 'iho', label: 'I(ho)', text: 'Write a sentence to show that you hope your friend is fine.', type: 'text', valType: 'sentence' },
+            { id: 'qi', label: 'Q(i)', text: 'Write an introduction about the event.', type: 'text', valType: 'sentence' },
+            { id: 'p1', label: 'P1 – what', text: 'What event did you attend?', type: 'text', valType: 'sentence' },
+            { id: 'p2', label: 'P2 – when and where', text: 'When and where did the event take place?', type: 'text', valType: 'sentence' },
+            { id: 'p3', label: 'P3 – price', text: 'How much was the entry fee?', type: 'text', valType: 'price' },
+            { id: 'p4_1_start', label: 'P4 – activities (Firstly)', text: 'Write a sentence starter.', type: 'text', prefix: 'Firstly,', valType: 'short' },
+            { id: 'p4_1_act', label: 'P4 – activities (Firstly)', text: 'What was the first activity?', type: 'text', valType: 'short' },
+            { id: 'p4_1_what', label: 'P4 – activities (Firstly)', text: 'What happened / what did you do?', type: 'text', valType: 'sentence' },
+            { id: 'p4_1_feel', label: 'P4 – activities (Firstly)', text: 'How did you feel?', type: 'text', valType: 'sentence' },
+            { id: 'p4_2_start', label: 'P4 – activities (Next)', text: 'Write a sentence starter.', type: 'text', prefix: 'Next,', valType: 'short' },
+            { id: 'p4_2_act', label: 'P4 – activities (Next)', text: 'What was the next activity?', type: 'text', valType: 'short' },
+            { id: 'p4_2_what', label: 'P4 – activities (Next)', text: 'What happened / what did you do?', type: 'text', valType: 'sentence' },
+            { id: 'p4_2_feel', label: 'P4 – activities (Next)', text: 'How did you feel?', type: 'text', valType: 'sentence' },
+            { id: 'p4_3_start', label: 'P4 – activities (Finally)', text: 'Write a sentence starter.', type: 'text', prefix: 'Finally,', valType: 'short' },
+            { id: 'p4_3_act', label: 'P4 – activities (Finally)', text: 'What was the last activity?', type: 'text', valType: 'short' },
+            { id: 'p4_3_what', label: 'P4 – activities (Finally)', text: 'What happened / what did you do?', type: 'text', valType: 'sentence' },
+            { id: 'p4_3_feel', label: 'P4 – activities (Finally)', text: 'How did you feel?', type: 'text', valType: 'sentence' },
+            { id: 'ienjoy', label: 'I(enjoy)', text: 'Write a sentence about enjoying the event.', type: 'text', valType: 'sentence' },
+            { id: 'see', label: 'S(ee)', text: 'Write your closing sentence.', type: 'text', valType: 'short' },
+            { id: 'yo', label: 'Y(o)', text: 'Write your email sign-off.', type: 'text', valType: 'short' },
+            { id: 'na', label: 'N(a)', text: 'Write your name (This will appear below the sign-off).', type: 'text', valType: 'short' }
+        ];
+
+        // --- DOM ELEMENTS ---
+        const screens = {
+            home: document.getElementById('screen-home'),
+            parts: document.getElementById('screen-parts'),
+            questions: document.getElementById('screen-questions'),
+            formulaWizard: document.getElementById('screen-formula-wizard'),
+            formulaReview: document.getElementById('screen-formula-review'),
+            write: document.getElementById('screen-write')
+        };
+        const modals = {
+            overlay: document.getElementById('modal-overlay'),
+            loading: document.getElementById('modal-loading'),
+            success: document.getElementById('modal-success'),
+            confirm: document.getElementById('modal-confirm'),
+            error: document.getElementById('modal-error')
+        };
+
+        function showScreen(screenId) {
+            Object.values(screens).forEach(s => {
+                s.classList.remove('active');
+                setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 300);
+            });
+            setTimeout(() => {
+                screens[screenId].style.display = 'flex';
+                void screens[screenId].offsetWidth; 
+                screens[screenId].classList.add('active');
+            }, 300);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+        }
+        function closeRefModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        // 1. Start Button (Login)
+        document.getElementById('btn-start').addEventListener('click', () => {
+            const name = document.getElementById('studentName').value.trim();
+            const cls = document.getElementById('studentClass').value;
+            if (name && cls) {
+                state.studentName = name;
+                state.studentClass = cls;
+                document.getElementById('login-error').classList.add('hidden');
+                document.getElementById('display-name-parts').textContent = name;
+                document.getElementById('student-info-display').textContent = `${name} | ${cls}`;
+                document.getElementById('student-info-display-questions').textContent = `${name} | ${cls}`;
+                
+                updatePartCompletionUI();
+                showScreen('parts');
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        // Smart Navigation
+        window.goToParts = function() {
+            updatePartCompletionUI();
+            showScreen('parts');
+        };
+
+        window.goToQuestions = function() {
+            closeModal();
+            renderQuestionGrid();
+            showScreen('questions');
+        };
+
+        window.goHome = function() {
+            closeModal();
+            showScreen('home');
+        };
+
+        // Update Part Completion Status UI
+        function updatePartCompletionUI() {
+            ['part6', 'part7'].forEach(partKey => {
+                const availableQs = questionBank[partKey].filter(q => q.available);
+                const completedCount = availableQs.filter(q => state.completedQuestions.includes(q.id)).length;
+                
+                const statusDiv = document.getElementById(`${partKey}-completion-status`);
+                if (completedCount === 0) {
+                    statusDiv.innerHTML = `<i class="fas fa-play-circle text-gray-400"></i> Not started yet`;
+                    statusDiv.className = "mb-4 text-sm font-bold text-gray-500 px-4 py-2 bg-gray-50 rounded-lg w-full border border-gray-200";
+                } else if (completedCount < availableQs.length) {
+                    statusDiv.innerHTML = `<i class="fas fa-check text-green-500"></i> ${completedCount} of ${availableQs.length} available questions completed`;
+                    statusDiv.className = "mb-4 text-sm font-bold text-green-600 px-4 py-2 bg-green-50 rounded-lg w-full border border-green-200";
+                } else {
+                    statusDiv.innerHTML = `<i class="fas fa-check-double text-green-600"></i> ALL COMPLETED!`;
+                    statusDiv.className = "mb-4 text-sm font-bold text-green-700 px-4 py-2 bg-green-100 rounded-lg w-full border border-green-300 shadow-inner";
+                    
+                    // Add badge to the card
+                    const card = statusDiv.closest('.game-card');
+                    if (!card.querySelector('.all-completed-badge')) {
+                        const badge = document.createElement('div');
+                        badge.className = "all-completed-badge absolute -top-3 -left-3 bg-mint text-white font-black py-2 px-4 rounded-xl shadow-lg z-20 flex items-center gap-2 transform -rotate-12";
+                        badge.innerHTML = `<i class="fas fa-star"></i> COMPLETED`;
+                        card.appendChild(badge);
+                    }
+                }
+            });
+        }
+
+        // 2. Select Part
+        window.selectPart = function(part) {
+            state.selectedPart = part;
+            renderQuestionGrid();
+            const badge = document.getElementById('part-badge');
+            if(part === 'part6') {
+                badge.textContent = "PART 6 - EMAIL WRITING";
+                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-white mb-4 shadow-md uppercase tracking-wide text-sm bg-secondary";
+            } else {
+                badge.textContent = "PART 7 - GUIDED WRITING";
+                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-white mb-4 shadow-md uppercase tracking-wide text-sm bg-pink";
+            }
+            showScreen('questions');
+        };
+
+        // 3. Render Questions with Completion Status
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            const questions = questionBank[state.selectedPart];
+            const isPart6 = state.selectedPart === 'part6';
+            const themeColor = isPart6 ? 'secondary' : 'pink';
+            const themeBorder = isPart6 ? 'border-secondary' : 'border-pink';
+            const themeBg = isPart6 ? 'bg-blue-50' : 'bg-pink-50';
+            const icon = isPart6 ? 'fa-envelope' : 'fa-book';
+
+            questions.forEach(q => {
+                const card = document.createElement('div');
+                
+                const isCompleted = state.completedQuestions.includes(q.id);
+                // Check if user has started formula or drafted text
+                const hasDraft = state.draftAnswers[q.id] || (state.formulas[q.id] && Object.keys(state.formulas[q.id]).length > 2);
+                
+                if (q.available) {
+                    let statusHtml = '';
+                    let cardBgClasses = 'bg-white';
+                    let btnText = "START PRACTICE";
+                    let btnClasses = `bg-${themeColor} shadow-3d-btn hover:brightness-110`;
+
+                    if (isCompleted) {
+                        statusHtml = `<div class="bg-green-100 text-green-700 text-xs font-black px-3 py-1 rounded-lg border border-green-200"><i class="fas fa-check"></i> COMPLETED</div>`;
+                        cardBgClasses = 'bg-green-50 border-green-400';
+                        btnText = "PRACTICE AGAIN";
+                        btnClasses = "bg-green-500 shadow-3d-btn text-white hover:bg-green-600";
+                    } else if (hasDraft) {
+                        statusHtml = `<div class="bg-yellow-100 text-yellow-700 text-xs font-black px-3 py-1 rounded-lg border border-yellow-200"><i class="fas fa-pen"></i> IN PROGRESS</div>`;
+                        btnText = "CONTINUE";
+                    } else {
+                        statusHtml = `<div class="bg-gray-100 text-gray-500 text-xs font-bold px-3 py-1 rounded-lg">Set ${q.set}</div>`;
+                    }
+
+                    card.className = `game-card ${cardBgClasses} rounded-2xl p-6 shadow-card border-4 ${isCompleted ? 'border-green-400' : themeBorder} cursor-pointer relative overflow-hidden group flex flex-col h-full`;
+                    card.onclick = () => handleQuestionSelection(q.id);
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            ${statusHtml}
+                        </div>
+                        <div class="w-16 h-16 rounded-full ${isCompleted ? 'bg-green-100 text-green-500' : themeBg + ' text-' + themeColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas ${isCompleted ? 'fa-check-circle' : icon} text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-heading font-bold text-textMain mb-2 flex-grow">${q.title}</h4>
+                        <div class="w-full text-white text-center py-2 rounded-lg font-bold mt-4 transition-transform group-hover:translate-y-[-2px] ${btnClasses}">${btnText}</div>
+                    `;
+                } else {
+                    card.className = `bg-gray-100 rounded-2xl p-6 border-4 border-gray-200 relative overflow-hidden flex flex-col h-full opacity-70 grayscale`;
+                    card.innerHTML = `
+                        <div class="absolute inset-0 bg-gray-200/50 flex items-center justify-center z-10"><span class="bg-gray-800 text-white font-bold px-4 py-2 rounded-xl transform -rotate-12">COMING SOON</span></div>
+                        <div class="flex justify-between items-start mb-4"><div class="bg-gray-200 text-gray-500 text-xs font-bold px-3 py-1 rounded-lg">Set ${q.set}</div></div>
+                        <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mb-4"><i class="fas ${icon} text-2xl text-gray-400"></i></div>
+                        <h4 class="text-xl font-heading font-bold text-gray-400 mb-2 flex-grow">${q.title}</h4>
+                    `;
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        function handleQuestionSelection(questionId) {
+            const question = questionBank[state.selectedPart].find(q => q.id === questionId);
+            state.selectedQuestion = question;
+            
+            // Build Question Content for References
+            buildQuestionHTML(question);
+            
+            if (state.selectedPart === 'part6') {
+                // Part 6 skips formula, goes straight to writing
+                document.getElementById('part7-target-badge').classList.add('hidden');
+                document.getElementById('btn-view-formula').classList.add('hidden');
+                document.getElementById('btn-back-from-write').onclick = () => showScreen('questions');
+                setupWritingArea(question, false);
+                showScreen('write');
+            } else {
+                // Part 7 requires formula
+                document.getElementById('part7-target-badge').classList.remove('hidden');
+                document.getElementById('btn-view-formula').classList.remove('hidden');
+                document.getElementById('btn-back-from-write').onclick = () => showScreen('formulaReview');
+                
+                // Initialize or Load formula
+                if (!state.formulas[questionId]) {
+                    state.formulas[questionId] = createEmptyFormula();
+                }
+                activeFormula = state.formulas[questionId];
+
+                if (!activeFormula.completed) {
+                    state.formulaStepIndex = 0;
+                    state.isEditingFormula = false;
+                    loadFormulaStep(0);
+                    showScreen('formulaWizard');
+                } else {
+                    // Already completed formula, go to review
+                    renderFormulaReview();
+                    showScreen('formulaReview');
+                }
+            }
+        }
+
+        function loadFormulaStep(index) {
+            state.formulaStepIndex = index;
+            const step = formulaStepsDef[index];
+            const qContent = state.selectedQuestion.content;
+            
+            // Update UI Counters
+            document.getElementById('formula-step-counter').textContent = `Step ${index + 1} of ${formulaStepsDef.length}`;
+            document.getElementById('formula-progress').style.width = `${((index + 1) / formulaStepsDef.length) * 100}%`;
+            document.getElementById('formula-label-display').textContent = step.label;
+            document.getElementById('formula-instruction').textContent = step.text;
+            
+            const errEl = document.getElementById('formula-error');
+            errEl.classList.add('hidden');
+
+            // Render Input Container
+            const container = document.getElementById('formula-input-container');
+            container.innerHTML = '';
+            
+            let currentValue = activeFormula[step.id] || '';
+
+            if (step.type === 'radio') {
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex flex-col gap-3';
+                step.options.forEach(opt => {
+                    const id = `radio-${opt.replace(/\s+/g, '-')}`;
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'custom-radio';
+                    wrapper.innerHTML = `
+                        <input type="radio" id="${id}" name="formula-radio" value="${opt}" ${currentValue === opt ? 'checked' : ''}>
+                        <label for="${id}" class="block w-full p-4 rounded-xl text-lg font-bold text-gray-700 bg-white hover:bg-gray-50 text-center">${opt}</label>
+                    `;
+                    wrapper.querySelector('input').addEventListener('change', (e) => {
+                        activeFormula[step.id] = e.target.value;
+                        validateCurrentStep();
+                    });
+                    flexDiv.appendChild(wrapper);
+                });
+                container.appendChild(flexDiv);
+            } else if (step.type === 'text') {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex items-center gap-3 w-full';
+                
+                if (step.prefix) {
+                    const prefixEl = document.createElement('span');
+                    prefixEl.className = 'text-xl font-heading font-bold text-pink whitespace-nowrap';
+                    prefixEl.textContent = step.prefix;
+                    wrapper.appendChild(prefixEl);
+                }
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'formula-current-input';
+                input.value = currentValue;
+                input.className = 'w-full flex-grow p-4 bg-[#FFF9EB] border-2 border-gray-200 rounded-xl focus:border-pink focus:ring-4 focus:ring-pink/20 focus:outline-none font-body text-lg text-gray-800 shadow-inner';
+                input.placeholder = "Type your answer here...";
+                
+                input.addEventListener('input', (e) => {
+                    activeFormula[step.id] = e.target.value;
+                    validateCurrentStep(true); // Silent validation on type
+                });
+                
+                // Submit on Enter
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') document.getElementById('btn-formula-next').click();
+                });
+
+                wrapper.appendChild(input);
+                container.appendChild(wrapper);
+                
+                setTimeout(() => input.focus(), 100);
+            }
+
+            document.getElementById('btn-formula-back').style.display = index === 0 && !state.isEditingFormula ? 'none' : 'block';
+            validateCurrentStep(true); 
+        }
+
+        function validateCurrentStep(silent = false) {
+            const step = formulaStepsDef[state.formulaStepIndex];
+            const val = activeFormula[step.id] ? activeFormula[step.id] : '';
+            const btnNext = document.getElementById('btn-formula-next');
+            const errEl = document.getElementById('formula-error');
+            
+            let isValid = true;
+            let errMsg = "";
+
+            if (step.type !== 'radio' && step.valType !== 'none') {
+                const validationResult = smartValidate(val, step.valType);
+                isValid = validationResult.valid;
+                errMsg = validationResult.msg;
+            } else {
+                isValid = val.trim().length > 0;
+                errMsg = "Please select an option.";
+            }
+
+            // Override with custom step logic if needed
+            if (isValid && step.validate && val) {
+                const customVal = step.validate(val);
+                if (customVal !== true) {
+                    isValid = false;
+                    errMsg = customVal;
+                }
+            }
+
+            btnNext.disabled = false; 
+
+            if (!isValid && !silent) {
+                errEl.classList.remove('hidden');
+                document.getElementById('formula-error-text').textContent = errMsg;
+            } else {
+                errEl.classList.add('hidden');
+            }
+            
+            return isValid;
+        }
+
+        // Formula Navigation
+        document.getElementById('btn-formula-back').addEventListener('click', () => {
+            if (state.isEditingFormula) {
+                state.isEditingFormula = false;
+                renderFormulaReview();
+                showScreen('formulaReview');
+            } else if (state.formulaStepIndex > 0) {
+                loadFormulaStep(state.formulaStepIndex - 1);
+            }
+        });
+
+        document.getElementById('btn-formula-next').addEventListener('click', () => {
+            if (!validateCurrentStep(false)) return; // false = not silent, show error
+            
+            if (state.isEditingFormula) {
+                state.isEditingFormula = false;
+                renderFormulaReview();
+                showScreen('formulaReview');
+            } else if (state.formulaStepIndex < formulaStepsDef.length - 1) {
+                loadFormulaStep(state.formulaStepIndex + 1);
+            } else {
+                activeFormula.completed = true;
+                renderFormulaReview();
+                showScreen('formulaReview');
+            }
+        });
+
+        window.editFormulaStep = function(index) {
+            state.isEditingFormula = true;
+            loadFormulaStep(index);
+            showScreen('formulaWizard');
+        };
+
+        function renderFormulaReview() {
+            const tbody = document.getElementById('formula-review-tbody');
+            const tbodyModal = document.getElementById('modal-formula-tbody');
+            let html = '';
+            
+            const getVal = (id) => activeFormula[id] || '';
+            const editBtn = (idx) => `<button onclick="editFormulaStep(${idx})" class="ml-2 text-sm text-pink hover:text-pink-600 underline font-bold"><i class="fas fa-edit"></i> Edit</button>`;
+
+            const simpleRows = [
+                { label: 'Grammar', val: getVal('grammar'), idx: 0 },
+                { label: 'D(e)', val: getVal('de'), idx: 1 },
+                { label: 'H(o)', val: getVal('ho'), idx: 2 },
+                { label: 'I(ho)', val: getVal('iho'), idx: 3 },
+                { label: 'Q(i)', val: getVal('qi'), idx: 4 },
+                { label: 'P1 – what', val: getVal('p1'), idx: 5 },
+                { label: 'P2 – when and where', val: getVal('p2'), idx: 6 },
+                { label: 'P3 – price', val: getVal('p3'), idx: 7 }
+            ];
+
+            simpleRows.forEach(r => {
+                html += `<tr><td class="font-bold text-gray-700">${r.label}</td><td>${r.val} ${editBtn(r.idx)}</td></tr>`;
+            });
+
+            html += `
+                <tr>
+                    <td class="font-bold text-gray-700 align-top pt-4">P4 – activities</td>
+                    <td class="p-0 border-none">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm mt-2 mb-2 border border-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="border p-2">Connector</th>
+                                        <th class="border p-2">Sentence Starter</th>
+                                        <th class="border p-2">Activity</th>
+                                        <th class="border p-2">What happened?</th>
+                                        <th class="border p-2">Feeling</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2 font-bold text-pink">Firstly,</td>
+                                        <td class="border p-2">${getVal('p4_1_start')} ${editBtn(8)}</td>
+                                        <td class="border p-2">${getVal('p4_1_act')} ${editBtn(9)}</td>
+                                        <td class="border p-2">${getVal('p4_1_what')} ${editBtn(10)}</td>
+                                        <td class="border p-2">${getVal('p4_1_feel')} ${editBtn(11)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2 font-bold text-pink">Next,</td>
+                                        <td class="border p-2">${getVal('p4_2_start')} ${editBtn(12)}</td>
+                                        <td class="border p-2">${getVal('p4_2_act')} ${editBtn(13)}</td>
+                                        <td class="border p-2">${getVal('p4_2_what')} ${editBtn(14)}</td>
+                                        <td class="border p-2">${getVal('p4_2_feel')} ${editBtn(15)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2 font-bold text-pink">Finally,</td>
+                                        <td class="border p-2">${getVal('p4_3_start')} ${editBtn(16)}</td>
+                                        <td class="border p-2">${getVal('p4_3_act')} ${editBtn(17)}</td>
+                                        <td class="border p-2">${getVal('p4_3_what')} ${editBtn(18)}</td>
+                                        <td class="border p-2">${getVal('p4_3_feel')} ${editBtn(19)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            const closingRows = [
+                { label: 'I(enjoy)', val: getVal('ienjoy'), idx: 20 },
+                { label: 'S(ee)', val: getVal('see'), idx: 21 },
+                { label: 'Y(o)', val: getVal('yo'), idx: 22 },
+                { label: 'N(a)', val: getVal('na'), idx: 23 }
+            ];
+
+            closingRows.forEach(r => {
+                html += `<tr><td class="font-bold text-gray-700">${r.label}</td><td>${r.val} ${editBtn(r.idx)}</td></tr>`;
+            });
+
+            tbody.innerHTML = html;
+            tbodyModal.innerHTML = html.replace(/<button.*?<\/button>/g, '');
+        }
+
+        window.continueToFullEmail = function() {
+            setupWritingArea(state.selectedQuestion, true);
+            showScreen('write');
+        };
+
+        function buildQuestionHTML(question) {
+            let htmlContent = '';
+            
+            if (question.part === 6) {
+                htmlContent = `
+                    <div class="mb-4">
+                        <p class="mb-2">${question.content.instruction}</p>
+                        <p class="font-bold mb-2">${question.content.task}</p>
+                        <p class="mb-2">In your email,</p>
+                        <ul class="list-disc pl-6 mb-4 space-y-1">
+                            ${question.content.bullets.map(b => `<li>${b}</li>`).join('')}
+                        </ul>
+                        <p class="font-bold text-primary">${question.content.wordLimit}</p>
+                    </div>
+                `;
+            } else {
+                let specialEventsHtml = '';
+                if (question.content.specialEvents) {
+                    specialEventsHtml = `
+                        <p class="font-bold mt-4 mb-2 text-primary">${question.content.specialEventsHeading}</p>
+                        <ul class="list-disc pl-6 mb-2 space-y-2">
+                            ${question.content.specialEvents.map(e => `<li>${e}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+
+                htmlContent = `
+                    <div class="mb-2">
+                        <p class="mb-4 text-gray-800">${question.content.instruction}</p>
+                        <div class="bg-white border-2 border-gray-200 rounded-xl p-5 mb-4 shadow-sm relative">
+                            <h4 class="font-heading font-bold text-xl text-center mb-4 uppercase text-textMain">${question.content.eventTitle}</h4>
+                            <div class="mb-4 space-y-1">
+                                ${question.content.eventInfo.map(info => `<p>${info.replace(/^([^:]+:)/, '<strong class="text-primary">$1</strong>')}</p>`).join('')}
+                            </div>
+                            <p class="font-bold mb-2 text-primary">${question.content.activitiesHeading}</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                ${question.content.activities.map(act => `<li>${act}</li>`).join('')}
+                            </ul>
+                            ${specialEventsHtml}
+                        </div>
+                        <p class="font-bold text-secondary text-lg border-t pt-4 text-center">${question.content.task}</p>
+                    </div>
+                `;
+            }
+
+            const gallery = document.getElementById('image-gallery-container');
+            gallery.innerHTML = `<div class="w-full bg-white p-6 rounded-xl shadow-sm text-gray-800 font-body text-lg border-2 border-gray-100">${htmlContent}</div>`;
+            gallery.classList.remove('image-zoom-container');
+            document.getElementById('modal-question-content').innerHTML = htmlContent;
+        }
+
+        function setupWritingArea(question, isPart7) {
+            document.getElementById('current-question-title').textContent = `Set ${question.set}: ${question.title}`;
+            document.getElementById('current-question-marks').textContent = `[${question.marks} marks]`;
+            
+            const emailHeaderDisplay = document.getElementById('email-header-display');
+            const answerInput = document.getElementById('answer-input');
+            const errorMsg = document.getElementById('email-error-msg');
+            errorMsg.classList.add('hidden');
+            
+            document.getElementById('email-to-text').textContent = question.content.emailTo;
+            document.getElementById('email-subject-text').textContent = question.content.emailSubject;
+            emailHeaderDisplay.classList.remove('hidden');
+            
+            document.getElementById('writing-header').textContent = "WRITE YOUR EMAIL";
+            
+            // Manage Drafts
+            answerInput.dataset.qId = question.id;
+            if (state.draftAnswers[question.id]) {
+                answerInput.value = state.draftAnswers[question.id];
+            } else {
+                answerInput.value = '';
+            }
+            
+            answerInput.placeholder = "Start writing your email here...";
+            updateWordCount();
+        }
+
+        const answerInput = document.getElementById('answer-input');
+        const wordCountDisplay = document.getElementById('word-count');
+        
+        function updateWordCount() {
+            const text = answerInput.value.trim();
+            const count = text ? text.split(/\s+/).length : 0;
+            wordCountDisplay.textContent = count;
+            state.answerText = text;
+            
+            // Save to drafts on the fly
+            if (answerInput.dataset.qId) {
+                state.draftAnswers[answerInput.dataset.qId] = text;
+            }
+        }
+        answerInput.addEventListener('input', updateWordCount);
+
+        document.getElementById('btn-clear-answer').addEventListener('click', () => {
+            if(state.answerText.length > 0) {
+                answerInput.value = '';
+                updateWordCount();
+            }
+        });
+
+        document.querySelectorAll('.btn-back-questions').forEach(btn => btn.addEventListener('click', () => {
+            renderQuestionGrid();
+            showScreen('questions');
+        }));
+
+        window.closeModal = function() {
+            modals.overlay.classList.add('hidden');
+            modals.overlay.classList.remove('flex');
+            state.isSubmitting = false;
+        };
+
+        document.getElementById('btn-submit-answer').addEventListener('click', () => {
+            const validation = smartValidate(state.answerText, 'email');
+            const errEl = document.getElementById('email-error-msg');
+            
+            if (!validation.valid) {
+                errEl.classList.remove('hidden');
+                document.getElementById('email-error-text').textContent = validation.msg;
+                return;
+            }
+            errEl.classList.add('hidden');
+
+            const wc = parseInt(wordCountDisplay.textContent);
+            const warningText = document.getElementById('confirm-warning-text');
+            
+            let wcWarning = "";
+            if (state.selectedPart === 'part7' && (wc < 60 || wc > 80)) {
+                wcWarning = `Your word count is <span class="text-red-500 font-black">${wc}</span>. The target is 60-80 words.<br><br>`;
+            } else if (state.selectedPart === 'part6' && (wc < 30 || wc > 50)) {
+                wcWarning = `Your word count is <span class="text-red-500 font-black">${wc}</span>. The target is 30-50 words.<br><br>`;
+            }
+
+            warningText.innerHTML = `${wcWarning}Are you sure you want to hand in your answer? You cannot change it later.`;
+
+            modals.overlay.classList.remove('hidden');
+            modals.overlay.classList.add('flex');
+            Object.values(modals).forEach(m => m !== modals.overlay && m.classList.add('hidden'));
+            modals.confirm.classList.remove('hidden');
+        });
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycOwNV7rig_40o6refA8bNS-GCWlce0biw8uZWFW4t0eXKzWgxCOhKnfW4Yq5uHi2vUg/exec";
+
+        function submitToGoogleSheets(data) {
+            const iframeName = 'hidden_iframe_' + Date.now();
+            const iframe = document.createElement('iframe');
+            iframe.name = iframeName;
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = SCRIPT_URL;
+            form.target = iframeName;
+            form.style.display = 'none';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'payload';
+            input.value = JSON.stringify(data);
+            form.appendChild(input);
+            document.body.appendChild(form);
+            
+            iframe.onload = function() {
+                // Confirmation achieved based on network response iframe load
+                state.isSubmitting = false;
+                
+                // Mark as completed
+                if (state.selectedQuestion && !state.completedQuestions.includes(state.selectedQuestion.id)) {
+                    state.completedQuestions.push(state.selectedQuestion.id);
+                }
+                
+                // Clear draft
+                if (state.selectedQuestion) {
+                    delete state.draftAnswers[state.selectedQuestion.id];
+                }
+
+                Object.values(modals).forEach(m => m !== modals.overlay && m.classList.add('hidden'));
+                modals.success.classList.remove('hidden');
+                
+                setTimeout(() => { 
+                    try { document.body.removeChild(form); document.body.removeChild(iframe); } catch(e){} 
+                }, 1000);
+            };
+            
+            // Fallback timeout in case of CORS block on iframe onload
+            setTimeout(() => {
+                if(state.isSubmitting) {
+                    iframe.onload(); // Force load handler
+                }
+            }, 8000);
+
+            form.submit();
+        }
+
+        window.processSubmission = function() {
+            if (state.isSubmitting) return;
+            state.isSubmitting = true;
+            
+            Object.values(modals).forEach(m => m !== modals.overlay && m.classList.add('hidden'));
+            modals.loading.classList.remove('hidden');
+
+            const submissionData = {
+                submissionId: `Y5-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+                studentName: state.studentName,
+                className: state.studentClass,
+                part: state.selectedPart.replace('part', 'Part '),
+                questionSet: "Set " + state.selectedQuestion.set,
+                questionId: state.selectedQuestion.id,
+                questionTitle: state.selectedQuestion.title,
+                answer: state.answerText 
+            };
+
+            submitToGoogleSheets(submissionData);
+        };
+    </script>
+</body>
+</html>
